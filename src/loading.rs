@@ -36,4 +36,9 @@ pub struct TextureAssets {
     pub github: Handle<Image>,
     #[asset(path = "textures/grass.png")]
     pub grass: Handle<Image>,
+    #[asset(texture_atlas_layout(tile_size_x = 32., tile_size_y = 47., columns = 6, rows = 4))]
+    pub sprite_layout: Handle<TextureAtlasLayout>,
+    #[asset(image(sampler = nearest))]
+    #[asset(path = "textures/sprite_walk.png")]
+    pub sprite_walk: Handle<Image>
 }
