@@ -18,11 +18,25 @@ impl Plugin for PlayerPlugin {
 }
 
 fn spawn_player(mut commands: Commands, textures: Res<TextureAssets>) {
+    let transform = Transform {
+        translation: Vec3::new(0.,0.,1.),
+        rotation: Quat::IDENTITY,
+        scale: Vec3::ONE*0.125,
+    };
     commands
         .spawn(SpriteBundle {
             texture: textures.bevy.clone(),
-            transform: Transform::from_translation(Vec3::new(0., 0., 1.)),
+            transform,
             ..Default::default()
+        })
+        .with_children(|parent| {
+            parent.spawn(Camera2dBundle{
+                camera: Camera {
+                    order: 2,
+                    ..default()
+                },
+                ..default()
+            });
         })
         .insert(Player);
 }
