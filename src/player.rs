@@ -51,11 +51,30 @@ struct AnimationTimer(Timer);
 fn animate_sprite_system(
     time: Res<Time>,
     mut sprites_to_animate: Query<(&mut AnimationTimer, &mut TextureAtlas)>,
+    actions: Res<Actions>
 ) {
     for (mut timer, mut sprite) in &mut sprites_to_animate {
         timer.0.tick(time.delta());
         if timer.0.finished() {
-            sprite.index = (sprite.index + 1) % 24;
+            match actions.player_movement {
+                Some(movement) => {
+                    if movement.y < 0. {
+                        sprite.index = (sprite.index + 1) % 6;
+                    } else if movement.y > 0. {
+                        sprite.index = 12 + ((sprite.index + 1) % 6);
+                    } else if movement.x > 0. {
+                        sprite.index = 6 + ((sprite.index + 1) % 6);
+                    } else if movement.x < 0. {
+                        sprite.index = 18 + ((sprite.index + 1) % 6);
+                    } else {
+                        sprite.index = (sprite.index + 1) % 6;
+                    }
+                },
+                None => {
+                    sprite.index = (sprite.index + 1) % 6;
+                }
+            }
+            // sprite.index = (sprite.index + 1) % 24;
         }
     }
 }
