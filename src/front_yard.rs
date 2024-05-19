@@ -17,17 +17,22 @@ impl Plugin for FrontYardPlugin {
 
 fn spawn_front_yard(mut commands: Commands, textures: Res<TextureAssets>) {
     let transform = Transform {
-        translation: Vec3::new(100.,0.,0.),
+        translation: Vec3::new(0.,0.,0.),
         rotation: Quat::IDENTITY,
-        scale: Vec3::ONE,
+        scale: Vec3::new(10.0, 10.0, 0.0),
     };
     commands
-        .spawn(
+        .spawn((
             SpriteBundle {
                 texture: textures.grass.clone(),
                 transform,
                 ..Default::default()
             },
-    )
+            ImageScaleMode::Tiled {
+                tile_x: true,
+                tile_y: true,
+                stretch_value: 0.1
+            }
+        ))
         .insert(FrontYard);
 }
