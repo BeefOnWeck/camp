@@ -26,6 +26,12 @@ impl Plugin for LoadingPlugin {
 pub struct AudioAssets {
     #[asset(path = "audio/flying.ogg")]
     pub flying: Handle<AudioSource>,
+    #[asset(path = "audio/kickstart.wav")]
+    pub kickstart: Handle<AudioSource>,
+    #[asset(path = "audio/no_rain.wav")]
+    pub no_rain: Handle<AudioSource>,
+    #[asset(path = "audio/galaxie.wav")]
+    pub galaxie: Handle<AudioSource>,
 }
 
 #[derive(AssetCollection, Resource)]

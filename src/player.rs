@@ -74,7 +74,6 @@ fn animate_sprite_system(
                     sprite.index = (sprite.index + 1) % 6;
                 }
             }
-            // sprite.index = (sprite.index + 1) % 24;
         }
     }
 }
