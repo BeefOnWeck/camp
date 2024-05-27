@@ -75,7 +75,7 @@ fn animate_sprite_system(
                     }
                 }
                 None => {
-                    sprite.index = (sprite.index + 1) % 6;
+                    sprite.index = sprite.index;
                 }
             }
         }
