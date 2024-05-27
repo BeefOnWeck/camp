@@ -1,6 +1,6 @@
 use bevy::prelude::*;
 use bevy::window::WindowMode;
-use bevy_game::GamePlugin; // ToDo: Replace bevy_game with your new crate name.
+use camp_game::GamePlugin; // ToDo: Replace camp_game with your new crate name.
 
 #[bevy_main]
 fn main() {
