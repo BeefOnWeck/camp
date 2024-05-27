@@ -2,14 +2,14 @@
 
 mod actions;
 mod audio;
-mod front_yard;
+mod ground;
 mod loading;
 mod menu;
 mod player;
 
 use crate::actions::ActionsPlugin;
 use crate::audio::InternalAudioPlugin;
-use crate::front_yard::FrontYardPlugin;
+use crate::ground::GroundPlugin;
 use crate::loading::LoadingPlugin;
 use crate::menu::MenuPlugin;
 use crate::player::PlayerPlugin;
@@ -43,7 +43,7 @@ impl Plugin for GamePlugin {
             ActionsPlugin,
             InternalAudioPlugin,
             PlayerPlugin,
-            FrontYardPlugin,
+            GroundPlugin,
         ));
 
         #[cfg(debug_assertions)]

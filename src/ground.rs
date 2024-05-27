@@ -2,20 +2,20 @@ use crate::loading::TextureAssets;
 use crate::GameState;
 use bevy::prelude::*;
 
-pub struct FrontYardPlugin;
+pub struct GroundPlugin;
 
 #[derive(Component)]
-pub struct FrontYard;
+pub struct Ground;
 
 /// This plugin handles player related stuff like movement
 /// Player logic is only active during the State `GameState::Playing`
-impl Plugin for FrontYardPlugin {
+impl Plugin for GroundPlugin {
     fn build(&self, app: &mut App) {
-        app.add_systems(OnEnter(GameState::Playing), spawn_front_yard);
+        app.add_systems(OnEnter(GameState::Playing), spawn_ground);
     }
 }
 
-fn spawn_front_yard(
+fn spawn_ground(
     mut commands: Commands,
     textures: Res<TextureAssets>,
     mut images: ResMut<Assets<Image>>,
@@ -63,5 +63,5 @@ fn spawn_front_yard(
                 stretch_value: 0.1,
             },
         ))
-        .insert(FrontYard);
+        .insert(Ground);
 }
