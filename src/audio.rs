@@ -15,7 +15,8 @@ impl Plugin for InternalAudioPlugin {
 }
 
 fn start_menu_music(audio_assets: Res<AudioAssets>, audio: Res<Audio>) {
-    audio.play(audio_assets.kickstart.clone())
+    audio
+        .play(audio_assets.kickstart.clone())
         .looped()
         .with_volume(0.3)
         .handle();
@@ -23,7 +24,8 @@ fn start_menu_music(audio_assets: Res<AudioAssets>, audio: Res<Audio>) {
 
 fn start_frontyard_music(audio_assets: Res<AudioAssets>, audio: Res<Audio>) {
     audio.stop();
-    audio.play(audio_assets.no_rain.clone())
+    audio
+        .play(audio_assets.no_rain.clone())
         .looped()
         .with_volume(0.3)
         .handle();

@@ -2,17 +2,17 @@
 
 mod actions;
 mod audio;
+mod front_yard;
 mod loading;
 mod menu;
 mod player;
-mod front_yard;
 
 use crate::actions::ActionsPlugin;
 use crate::audio::InternalAudioPlugin;
+use crate::front_yard::FrontYardPlugin;
 use crate::loading::LoadingPlugin;
 use crate::menu::MenuPlugin;
 use crate::player::PlayerPlugin;
-use crate::front_yard::FrontYardPlugin;
 
 use bevy::app::App;
 #[cfg(debug_assertions)]
@@ -43,7 +43,7 @@ impl Plugin for GamePlugin {
             ActionsPlugin,
             InternalAudioPlugin,
             PlayerPlugin,
-            FrontYardPlugin
+            FrontYardPlugin,
         ));
 
         #[cfg(debug_assertions)]

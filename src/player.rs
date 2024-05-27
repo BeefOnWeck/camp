@@ -14,13 +14,16 @@ impl Plugin for PlayerPlugin {
     fn build(&self, app: &mut App) {
         app.add_systems(OnEnter(GameState::Playing), spawn_player)
             .add_systems(Update, move_player.run_if(in_state(GameState::Playing)))
-            .add_systems(Update, animate_sprite_system.run_if(in_state(GameState::Playing)));
+            .add_systems(
+                Update,
+                animate_sprite_system.run_if(in_state(GameState::Playing)),
+            );
     }
 }
 
 fn spawn_player(mut commands: Commands, textures: Res<TextureAssets>) {
     let transform = Transform {
-        translation: Vec3::new(0.,0.,1.),
+        translation: Vec3::new(0., 0., 1.),
         rotation: Quat::IDENTITY,
         scale: Vec3::ONE,
     };
@@ -32,9 +35,10 @@ fn spawn_player(mut commands: Commands, textures: Res<TextureAssets>) {
                 ..Default::default()
             },
             TextureAtlas::from(textures.sprite_layout.clone()),
-            AnimationTimer(Timer::from_seconds(0.1, TimerMode::Repeating))
-        )).with_children(|parent| {
-            parent.spawn(Camera2dBundle{
+            AnimationTimer(Timer::from_seconds(0.1, TimerMode::Repeating)),
+        ))
+        .with_children(|parent| {
+            parent.spawn(Camera2dBundle {
                 camera: Camera {
                     order: 2,
                     ..default()
@@ -51,7 +55,7 @@ struct AnimationTimer(Timer);
 fn animate_sprite_system(
     time: Res<Time>,
     mut sprites_to_animate: Query<(&mut AnimationTimer, &mut TextureAtlas)>,
-    actions: Res<Actions>
+    actions: Res<Actions>,
 ) {
     for (mut timer, mut sprite) in &mut sprites_to_animate {
         timer.0.tick(time.delta());
@@ -69,7 +73,7 @@ fn animate_sprite_system(
                     } else {
                         sprite.index = (sprite.index + 1) % 6;
                     }
-                },
+                }
                 None => {
                     sprite.index = (sprite.index + 1) % 6;
                 }

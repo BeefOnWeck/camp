@@ -51,6 +51,18 @@ pub struct TextureAssets {
     pub sprite_walk: Handle<Image>,
     #[asset(texture_atlas_layout(tile_size_x = 48., tile_size_y = 48., columns = 2, rows = 4))]
     pub driveway_layout: Handle<TextureAtlasLayout>,
-    #[asset(paths("textures/asphalt1.png", "textures/asphalt2.png", "textures/asphalt3.png", "textures/asphalt4.png", "textures/asphalt5.png", "textures/asphalt6.png", "textures/asphalt7.png", "textures/asphalt8.png"), collection(typed))]
-    pub driveway: Vec<Handle<Image>>
+    #[asset(
+        paths(
+            "textures/asphalt1.png",
+            "textures/asphalt2.png",
+            "textures/asphalt3.png",
+            "textures/asphalt4.png",
+            "textures/asphalt5.png",
+            "textures/asphalt6.png",
+            "textures/asphalt7.png",
+            "textures/asphalt8.png"
+        ),
+        collection(typed)
+    )]
+    pub driveway: Vec<Handle<Image>>,
 }
