@@ -6,6 +6,7 @@ mod ground;
 mod loading;
 mod menu;
 mod player;
+mod scenery;
 
 use crate::actions::ActionsPlugin;
 use crate::audio::InternalAudioPlugin;
@@ -13,6 +14,7 @@ use crate::ground::GroundPlugin;
 use crate::loading::LoadingPlugin;
 use crate::menu::MenuPlugin;
 use crate::player::PlayerPlugin;
+use crate::scenery::SceneryPlugin;
 
 use bevy::app::App;
 #[cfg(debug_assertions)]
@@ -44,6 +46,7 @@ impl Plugin for GamePlugin {
             InternalAudioPlugin,
             PlayerPlugin,
             GroundPlugin,
+            SceneryPlugin
         ));
 
         #[cfg(debug_assertions)]

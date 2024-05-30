@@ -65,4 +65,6 @@ pub struct TextureAssets {
         collection(typed)
     )]
     pub driveway: Vec<Handle<Image>>,
+    #[asset(path = "textures/tree1.png")]
+    pub tree1: Handle<Image>,
 }
