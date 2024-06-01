@@ -1,6 +1,8 @@
 use crate::actions::Actions;
 use crate::loading::TextureAssets;
+use crate::scenery::Scenery;
 use crate::GameState;
+use bevy::math::bounding::{Aabb2d, BoundingVolume, IntersectsVolume};
 use bevy::prelude::*;
 
 pub struct PlayerPlugin;
@@ -85,7 +87,10 @@ fn animate_sprite_system(
 fn move_player(
     time: Res<Time>,
     actions: Res<Actions>,
-    mut player_query: Query<&mut Transform, With<Player>>,
+    images: Res<Assets<Image>>,
+    mut player_query: Query<(&mut Transform, &Handle<Image>), With<Player>>,
+    scenery_parent_query: Query<&Transform, (With<Scenery>, Without<Player>)>,
+    scenery_child_query: Query<(&Transform, &Handle<Image>), (With<Parent>, Without<Player>)>,
 ) {
     if actions.player_movement.is_none() {
         return;
@@ -94,9 +99,36 @@ fn move_player(
     let movement = Vec3::new(
         actions.player_movement.unwrap().x * speed * time.delta_seconds(),
         actions.player_movement.unwrap().y * speed * time.delta_seconds(),
-        0.,
+        0.0,
     );
-    for mut player_transform in &mut player_query {
+    for (mut player_transform, _player_image) in &mut player_query {
+        let mut undo_movement = false;
         player_transform.translation += movement;
+        // TODO: Figure out how to get the correct size from the sprite sheet
+        let player_dimensions = Vec2::new(32.0, 47.0);
+        let mut player_bounds = Aabb2d::new(
+            player_transform.translation.truncate(),
+            player_dimensions / 2.0,
+        );
+        player_bounds = player_bounds.shrink(Vec2::new(10.0, 10.0));
+        info!("Player BB: {:?}", player_bounds);
+        for parent_transform in &scenery_parent_query {
+            let location = parent_transform.translation.truncate();
+            for (child_transform, image_handle) in &scenery_child_query {
+                let image_size = images.get(image_handle).unwrap().size();
+                let mut scaled_image_dimensions =
+                    Vec2::new(image_size.x as f32, image_size.y as f32);
+                scaled_image_dimensions *= parent_transform.scale.truncate();
+                scaled_image_dimensions *= child_transform.scale.truncate();
+                let scenery_bounds = Aabb2d::new(location, scaled_image_dimensions / 2.0);
+                info!("Scenery BB: {:?}", scenery_bounds);
+                if scenery_bounds.intersects(&player_bounds) {
+                    undo_movement = true;
+                }
+            }
+        }
+        if undo_movement == true {
+            player_transform.translation -= movement;
+        }
     }
 }
