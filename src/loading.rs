@@ -84,4 +84,7 @@ pub struct TextureAssets {
 
     #[asset(path = "textures/car_right_gray.png")]
     pub car_right_gray: Handle<Image>,
+
+    #[asset(path = "textures/house.png")]
+    pub house: Handle<Image>,
 }
