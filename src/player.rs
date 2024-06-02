@@ -24,16 +24,11 @@ impl Plugin for PlayerPlugin {
 }
 
 fn spawn_player(mut commands: Commands, textures: Res<TextureAssets>) {
-    let transform = Transform {
-        translation: Vec3::new(0., 0., 1.),
-        rotation: Quat::IDENTITY,
-        scale: Vec3::ONE,
-    };
     commands
         .spawn((
             SpriteBundle {
                 texture: textures.sprite_walk.clone(),
-                transform,
+                transform: Transform::from_translation(Vec3::new(250.0, -600.0, 1.0)),
                 ..Default::default()
             },
             TextureAtlas::from(textures.sprite_layout.clone()),
@@ -90,7 +85,7 @@ fn move_player(
     images: Res<Assets<Image>>,
     mut player_query: Query<(&mut Transform, &Handle<Image>), With<Player>>,
     scenery_parent_query: Query<&Transform, (With<Scenery>, Without<Player>)>,
-    scenery_child_query: Query<(&Transform, &Handle<Image>), (With<Parent>, Without<Player>)>,
+    scenery_child_query: Query<(&Parent, &Transform, &Handle<Image>), (With<Parent>, Without<Player>)>,
 ) {
     if actions.player_movement.is_none() {
         return;
@@ -112,19 +107,19 @@ fn move_player(
         );
         player_bounds = player_bounds.shrink(Vec2::new(10.0, 10.0));
         info!("Player BB: {:?}", player_bounds);
-        for parent_transform in &scenery_parent_query {
-            let location = parent_transform.translation.truncate();
-            for (child_transform, image_handle) in &scenery_child_query {
-                let image_size = images.get(image_handle).unwrap().size();
-                let mut scaled_image_dimensions =
-                    Vec2::new(image_size.x as f32, image_size.y as f32);
-                scaled_image_dimensions *= parent_transform.scale.truncate();
-                scaled_image_dimensions *= child_transform.scale.truncate();
-                let scenery_bounds = Aabb2d::new(location, scaled_image_dimensions / 2.0);
-                info!("Scenery BB: {:?}", scenery_bounds);
-                if scenery_bounds.intersects(&player_bounds) {
-                    undo_movement = true;
-                }
+        for (parent, child_transform, image_handle) in &scenery_child_query {
+            let parent_transform = scenery_parent_query.get(parent.get()).unwrap();
+            let location = parent_transform.translation.truncate() + 
+                parent_transform.scale.truncate() * child_transform.translation.truncate();
+            let image_size = images.get(image_handle).unwrap().size();
+            let mut scaled_image_dimensions =
+                Vec2::new(image_size.x as f32, image_size.y as f32);
+            scaled_image_dimensions *= parent_transform.scale.truncate();
+            scaled_image_dimensions *= child_transform.scale.truncate();
+            let scenery_bounds = Aabb2d::new(location, scaled_image_dimensions / 2.0);
+            info!("Scenery BB: {:?}", scenery_bounds);
+            if scenery_bounds.intersects(&player_bounds) {
+                undo_movement = true;
             }
         }
         if undo_movement == true {

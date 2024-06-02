@@ -38,19 +38,26 @@ pub struct AudioAssets {
 pub struct TextureAssets {
     #[asset(path = "textures/bevy.png")]
     pub bevy: Handle<Image>,
+
     #[asset(path = "textures/github.png")]
     pub github: Handle<Image>,
+
     #[asset(path = "textures/grass.png")]
     pub grass: Handle<Image>,
+
     #[asset(path = "textures/asphalt1.png")]
     pub asphalt: Handle<Image>,
+
     #[asset(texture_atlas_layout(tile_size_x = 32., tile_size_y = 47., columns = 6, rows = 4))]
     pub sprite_layout: Handle<TextureAtlasLayout>,
+
     #[asset(image(sampler = nearest))]
     #[asset(path = "textures/sprite_walk.png")]
     pub sprite_walk: Handle<Image>,
+
     #[asset(texture_atlas_layout(tile_size_x = 48., tile_size_y = 48., columns = 2, rows = 4))]
     pub driveway_layout: Handle<TextureAtlasLayout>,
+
     #[asset(
         paths(
             "textures/asphalt1.png",
@@ -65,6 +72,16 @@ pub struct TextureAssets {
         collection(typed)
     )]
     pub driveway: Vec<Handle<Image>>,
+
     #[asset(path = "textures/tree1.png")]
     pub tree1: Handle<Image>,
+
+    #[asset(path = "textures/car_right_blue.png")]
+    pub car_right_blue: Handle<Image>,
+
+    #[asset(path = "textures/car_right_red.png")]
+    pub car_right_red: Handle<Image>,
+
+    #[asset(path = "textures/car_right_gray.png")]
+    pub car_right_gray: Handle<Image>,
 }
