@@ -85,7 +85,10 @@ fn move_player(
     images: Res<Assets<Image>>,
     mut player_query: Query<(&mut Transform, &Handle<Image>), With<Player>>,
     scenery_parent_query: Query<&Transform, (With<Scenery>, Without<Player>)>,
-    scenery_child_query: Query<(&Parent, &Transform, &Handle<Image>), (With<Parent>, Without<Player>)>,
+    scenery_child_query: Query<
+        (&Parent, &Transform, &Handle<Image>),
+        (With<Parent>, Without<Player>),
+    >,
 ) {
     if actions.player_movement.is_none() {
         return;
@@ -109,11 +112,10 @@ fn move_player(
         info!("Player BB: {:?}", player_bounds);
         for (parent, child_transform, image_handle) in &scenery_child_query {
             let parent_transform = scenery_parent_query.get(parent.get()).unwrap();
-            let location = parent_transform.translation.truncate() + 
-                parent_transform.scale.truncate() * child_transform.translation.truncate();
+            let location = parent_transform.translation.truncate()
+                + parent_transform.scale.truncate() * child_transform.translation.truncate();
             let image_size = images.get(image_handle).unwrap().size();
-            let mut scaled_image_dimensions =
-                Vec2::new(image_size.x as f32, image_size.y as f32);
+            let mut scaled_image_dimensions = Vec2::new(image_size.x as f32, image_size.y as f32);
             scaled_image_dimensions *= parent_transform.scale.truncate();
             scaled_image_dimensions *= child_transform.scale.truncate();
             let scenery_bounds = Aabb2d::new(location, scaled_image_dimensions / 2.0);
