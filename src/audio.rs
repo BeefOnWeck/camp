@@ -18,7 +18,7 @@ fn start_menu_music(audio_assets: Res<AudioAssets>, audio: Res<Audio>) {
     audio
         .play(audio_assets.kickstart.clone())
         .looped()
-        .with_volume(0.3)
+        .with_volume(0.5)
         .handle();
 }
 

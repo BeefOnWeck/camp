@@ -69,7 +69,7 @@ fn spawn_scenery(mut commands: Commands, textures: Res<TextureAssets>) {
             parent.spawn(
                 SpriteBundle {
                     texture: textures.house.clone(),
-                    transform: Transform::from_translation(Vec3::new(0.0, 0.0, 0.0)),
+                    transform: Transform::from_translation(Vec3::new(0.0, -200.0 / 0.5, 0.0)),
                     ..Default::default()
                 }
             );

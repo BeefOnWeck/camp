@@ -32,7 +32,10 @@ impl Default for ButtonColors {
 #[derive(Component)]
 struct Menu;
 
-fn setup_menu(mut commands: Commands, textures: Res<TextureAssets>) {
+fn setup_menu(
+    mut commands: Commands,
+    textures: Res<TextureAssets>
+) {
     info!("menu");
     commands.spawn(Camera2dBundle {
         camera: Camera {
@@ -58,6 +61,14 @@ fn setup_menu(mut commands: Commands, textures: Res<TextureAssets>) {
         ))
         .with_children(|children| {
             let button_colors = ButtonColors::default();
+            children.spawn(ImageBundle{
+                image: textures.camp.clone().into(),
+                style: Style {
+                    width: Val::Px(512.0),
+                    ..default()
+                },
+                ..default()
+            });
             children
                 .spawn((
                     ButtonBundle {

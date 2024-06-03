@@ -14,7 +14,7 @@ impl Plugin for LoadingPlugin {
             LoadingState::new(GameState::Loading)
                 .continue_to_state(GameState::Menu)
                 .load_collection::<AudioAssets>()
-                .load_collection::<TextureAssets>(),
+                .load_collection::<TextureAssets>()
         );
     }
 }
@@ -36,6 +36,9 @@ pub struct AudioAssets {
 
 #[derive(AssetCollection, Resource)]
 pub struct TextureAssets {
+    #[asset(path = "textures/camp_logo.png")]
+    pub camp: Handle<Image>,
+
     #[asset(path = "textures/bevy.png")]
     pub bevy: Handle<Image>,
 
