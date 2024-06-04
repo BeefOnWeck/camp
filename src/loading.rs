@@ -90,4 +90,13 @@ pub struct TextureAssets {
 
     #[asset(path = "textures/house.png")]
     pub house: Handle<Image>,
+
+    #[asset(path = "textures/fence_horizontal.png")]
+    pub fence_horizontal: Handle<Image>,
+
+    #[asset(path = "textures/fence_left_corner.png")]
+    pub fence_left_corner: Handle<Image>,
+
+    #[asset(path = "textures/fence_vertical.png")]
+    pub fence_vertical: Handle<Image>,
 }
