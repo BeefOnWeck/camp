@@ -109,6 +109,40 @@ fn spawn_scenery(mut commands: Commands, textures: Res<TextureAssets>) {
                     stretch_value: 1.0 / 60.0,
                 },
             ));
+            // Back fence
+            parent.spawn((
+                SpriteBundle {
+                    texture: textures.fence_horizontal.clone(),
+                    transform: Transform {
+                        translation: Vec3::new(0.0 / 0.5, 730.0 / 0.5, -0.1),
+                        rotation: Quat::IDENTITY,
+                        scale: Vec3::new(40.0, 2.0, 1.0),
+                    },
+                    ..Default::default()
+                },
+                ImageScaleMode::Tiled {
+                    tile_x: true,
+                    tile_y: false,
+                    stretch_value: 1.0 / 40.0,
+                },
+            ));
+            // Front fence (invisible and just a barrier)
+            parent.spawn((
+                SpriteBundle {
+                    texture: textures.fence_horizontal.clone(),
+                    transform: Transform {
+                        translation: Vec3::new(0.0 / 0.5, -730.0 / 0.5, -2.0),
+                        rotation: Quat::IDENTITY,
+                        scale: Vec3::new(40.0, 2.0, 1.0),
+                    },
+                    ..Default::default()
+                },
+                ImageScaleMode::Tiled {
+                    tile_x: true,
+                    tile_y: false,
+                    stretch_value: 1.0 / 40.0,
+                },
+            ));
         })
         .insert(Scenery);
 }
