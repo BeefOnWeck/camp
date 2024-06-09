@@ -18,46 +18,36 @@ impl Plugin for SceneryPlugin {
 }
 
 #[derive(Component)]
-struct BoundingBox {
-    aabb: Aabb2d
+struct Bounding {
+    boxes: Vec<Aabb2d>
 }
 
-#[derive(Bundle)]
-struct BoundedSprite {
-    sprite: SpriteBundle,
-    tile: ImageScaleMode,
-    bounds: BoundingBox
-}
-
-impl BoundedSprite {
-    fn from_texture(texture: Handle<Image>, trans_x: f32, trans_y: f32, trans_z: f32) -> Self {
-        BoundedSprite {
-            sprite: SpriteBundle {
+impl Scenery {
+    fn from_texture(
+        texture: Handle<Image>, trans_x: f32, trans_y: f32, trans_z: f32
+    ) -> (SpriteBundle, Bounding) {
+        (
+            SpriteBundle {
                 texture,
                 transform: Transform::from_translation(Vec3::new(trans_x, trans_y, trans_z)),
                 ..Default::default()
             },
-            tile: ImageScaleMode::Tiled {
-                tile_x: false,
-                tile_y: false,
-                stretch_value: 1.0,
-            },
-            bounds: BoundingBox {
-                aabb: Aabb2d {
+            Bounding {
+                boxes: vec![Aabb2d {
                     min: Vec2::ZERO,
                     max: Vec2::ZERO
-                }
+                }]
             }
-        }
+        )
     }
 
     fn tiled_from_texture(
         texture: Handle<Image>, 
         trans_x: f32, trans_y: f32, trans_z: f32,
         tile_x: bool, tile_y: bool, stretch_factor: f32
-    ) -> Self {
-        BoundedSprite {
-            sprite: SpriteBundle {
+    ) -> (SpriteBundle, ImageScaleMode, Bounding) {
+        (
+            SpriteBundle {
                 texture,
                 transform: Transform {
                     translation: Vec3::new(trans_x, trans_y, trans_z),
@@ -69,18 +59,18 @@ impl BoundedSprite {
                 },
                 ..Default::default()
             },
-            tile: ImageScaleMode::Tiled {
+            ImageScaleMode::Tiled {
                 tile_x,
                 tile_y,
                 stretch_value: 1.0 / stretch_factor,
             },
-            bounds: BoundingBox {
-                aabb: Aabb2d {
+            Bounding {
+                boxes: vec![Aabb2d {
                     min: Vec2::ZERO,
                     max: Vec2::ZERO
-                }
+                }]
             }
-        }
+        )
     }
 }
 
@@ -98,32 +88,32 @@ fn spawn_scenery(mut commands: Commands, textures: Res<TextureAssets>) {
         })
         .with_children(|parent| {
             // Trees
-            parent.spawn(BoundedSprite::tiled_from_texture(
+            parent.spawn(Scenery::tiled_from_texture(
                 textures.tree1.clone(), 
                 440.0 / 0.5, 0.0, 0.0,
                 false, true, 15.0
             ));
             // Cars
-            parent.spawn(BoundedSprite::from_texture(
+            parent.spawn(Scenery::from_texture(
                 textures.car_right_gray.clone(),
                 340.0 / 0.5, -600.0 / 0.5, 0.0
             ));
-            parent.spawn(BoundedSprite::from_texture(
+            parent.spawn(Scenery::from_texture(
                 textures.car_right_blue.clone(),
                 340.0 / 0.5, -500.0 / 0.5, 0.0
             ));
-            parent.spawn(BoundedSprite::from_texture(
+            parent.spawn(Scenery::from_texture(
                 textures.car_right_red.clone(),
                 340.0 / 0.5, -400.0 / 0.5, 0.0
             ));
             // House
-            parent.spawn(BoundedSprite::from_texture(
+            parent.spawn(Scenery::from_texture(
                 textures.house.clone(),
                 0.0, -200.0 / 0.5, 0.0
             ));
             // Fence horizontal
-            parent.spawn(BoundedSprite {
-                sprite: SpriteBundle {
+            parent.spawn((
+                SpriteBundle {
                     texture: textures.fence_horizontal.clone(),
                     transform: Transform {
                         translation: Vec3::new(-280.0 / 0.5, -300.0 / 0.5, -0.1),
@@ -132,21 +122,21 @@ fn spawn_scenery(mut commands: Commands, textures: Res<TextureAssets>) {
                     },
                     ..Default::default()
                 },
-                tile: ImageScaleMode::Tiled {
+                ImageScaleMode::Tiled {
                     tile_x: true,
                     tile_y: false,
                     stretch_value: 1.0 / 15.0,
                 },
-                bounds: BoundingBox {
-                    aabb: Aabb2d {
+                Bounding {
+                    boxes: vec![Aabb2d {
                         min: Vec2::ZERO,
                         max: Vec2::ZERO
-                    }
+                    }]
                 }
-            });
+            ));
             // Fence corner
-            parent.spawn(BoundedSprite {
-                sprite: SpriteBundle {
+            parent.spawn((
+                SpriteBundle {
                     texture: textures.fence_left_corner.clone(),
                     transform: Transform {
                         translation: Vec3::new(-472.0 / 0.5, -300.0 / 0.5, -0.1),
@@ -155,27 +145,27 @@ fn spawn_scenery(mut commands: Commands, textures: Res<TextureAssets>) {
                     },
                     ..Default::default()
                 },
-                tile: ImageScaleMode::Tiled {
+                ImageScaleMode::Tiled {
                     tile_x: false,
                     tile_y: false,
                     stretch_value: 1.0,
                 },
-                bounds: BoundingBox {
-                    aabb: Aabb2d {
+                Bounding {
+                    boxes: vec![Aabb2d {
                         min: Vec2::ZERO,
                         max: Vec2::ZERO
-                    }
+                    }]
                 }
-            });
+            ));
             // Fence vertical
-            parent.spawn(BoundedSprite::tiled_from_texture(
+            parent.spawn(Scenery::tiled_from_texture(
                 textures.fence_vertical.clone(), 
                 -483.0 / 0.5, 0.0 / 0.5, -0.2,
                 false, true, 60.0
             ));
             // Back fence
-            parent.spawn(BoundedSprite {
-                sprite: SpriteBundle {
+            parent.spawn((
+                SpriteBundle {
                     texture: textures.fence_horizontal.clone(),
                     transform: Transform {
                         translation: Vec3::new(0.0 / 0.5, 730.0 / 0.5, -0.1),
@@ -184,21 +174,21 @@ fn spawn_scenery(mut commands: Commands, textures: Res<TextureAssets>) {
                     },
                     ..Default::default()
                 },
-                tile: ImageScaleMode::Tiled {
+                ImageScaleMode::Tiled {
                     tile_x: true,
                     tile_y: false,
                     stretch_value: 1.0 / 40.0,
                 },
-                bounds: BoundingBox {
-                    aabb: Aabb2d {
+                Bounding {
+                    boxes: vec![Aabb2d {
                         min: Vec2::ZERO,
                         max: Vec2::ZERO
-                    }
+                    }]
                 }
-            });
+            ));
             // Front fence (invisible and just a barrier)
-            parent.spawn(BoundedSprite {
-                sprite: SpriteBundle {
+            parent.spawn((
+                SpriteBundle {
                     texture: textures.fence_horizontal.clone(),
                     transform: Transform {
                         translation: Vec3::new(0.0 / 0.5, -730.0 / 0.5, -2.0),
@@ -207,18 +197,18 @@ fn spawn_scenery(mut commands: Commands, textures: Res<TextureAssets>) {
                     },
                     ..Default::default()
                 },
-                tile: ImageScaleMode::Tiled {
+                ImageScaleMode::Tiled {
                     tile_x: true,
                     tile_y: false,
                     stretch_value: 1.0 / 40.0,
                 },
-                bounds: BoundingBox {
-                    aabb: Aabb2d {
+                Bounding {
+                    boxes: vec![Aabb2d {
                         min: Vec2::ZERO,
                         max: Vec2::ZERO
-                    }
+                    }]
                 }
-            });
+            ));
         })
         .insert(Scenery);
 }
