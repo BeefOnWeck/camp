@@ -49,41 +49,40 @@ fn spawn_ground(
     let handle = images.add(texture);
 
     // Driveway
-    commands
-        .spawn((
-            SpriteBundle {
-                texture: handle.clone(),
-                transform: Transform {
-                    translation: Vec3::new(300., -240.0, 0.1),
-                    rotation: Quat::IDENTITY,
-                    scale: Vec3::new(1.0, 10.0, 1.0),
-                },
-                ..Default::default()
-            },
-            ImageScaleMode::Tiled {
-                tile_x: false,
-                tile_y: true,
-                stretch_value: 0.1,
-            },
-        ));
-
-    // Road
-    commands
-    .spawn((
+    commands.spawn((
         SpriteBundle {
-            texture: handle,
+            texture: handle.clone(),
             transform: Transform {
-                translation: Vec3::new(0.0, -816.0, 0.1),
+                translation: Vec3::new(300., -240.0, 0.1),
                 rotation: Quat::IDENTITY,
-                scale: Vec3::new(20.0, 2.0, 1.0),
+                scale: Vec3::new(1.0, 10.0, 1.0),
             },
             ..Default::default()
         },
         ImageScaleMode::Tiled {
-            tile_x: true,
-            tile_y: false,
-            stretch_value: 0.2,
+            tile_x: false,
+            tile_y: true,
+            stretch_value: 0.1,
         },
-    ))
-    .insert(Ground);
+    ));
+
+    // Road
+    commands
+        .spawn((
+            SpriteBundle {
+                texture: handle,
+                transform: Transform {
+                    translation: Vec3::new(0.0, -816.0, 0.1),
+                    rotation: Quat::IDENTITY,
+                    scale: Vec3::new(20.0, 2.0, 1.0),
+                },
+                ..Default::default()
+            },
+            ImageScaleMode::Tiled {
+                tile_x: true,
+                tile_y: false,
+                stretch_value: 0.2,
+            },
+        ))
+        .insert(Ground);
 }
