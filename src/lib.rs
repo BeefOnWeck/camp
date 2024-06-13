@@ -7,6 +7,7 @@ mod loading;
 mod menu;
 mod player;
 mod scenery;
+mod helpe;
 
 use crate::actions::ActionsPlugin;
 use crate::audio::InternalAudioPlugin;

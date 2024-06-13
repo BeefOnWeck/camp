@@ -1,6 +1,7 @@
 use crate::actions::Actions;
 use crate::loading::TextureAssets;
-use crate::scenery::{Bounding, Scenery};
+use crate::scenery::Scenery;
+use crate::helpe::Bounding;
 use crate::GameState;
 use bevy::math::bounding::{Aabb2d, BoundingVolume, IntersectsVolume};
 use bevy::prelude::*;
