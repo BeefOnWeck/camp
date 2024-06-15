@@ -1,6 +1,5 @@
 use crate::actions::Actions;
 use crate::loading::TextureAssets;
-use crate::scenery::Scenery;
 use crate::helpe::Bounding;
 use crate::GameState;
 use bevy::math::bounding::{Aabb2d, BoundingVolume, IntersectsVolume};
@@ -83,7 +82,6 @@ fn animate_sprite_system(
 fn move_player(
     time: Res<Time>,
     actions: Res<Actions>,
-    images: Res<Assets<Image>>,
     mut player_query: Query<(&mut Transform, &Handle<Image>), With<Player>>,
     bounding_query: Query<&Bounding, (With<Parent>, Without<Player>)>,
 ) {

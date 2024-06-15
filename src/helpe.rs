@@ -6,8 +6,6 @@ use bevy::math::bounding::Aabb2d;
 use bevy::sprite::{ImageScaleMode, SpriteBundle};
 use bevy::transform::components::Transform;
 
-pub struct Helpe;
-
 #[derive(Component)]
 pub struct Bounding {
     pub boxes: Vec<Aabb2d>,
@@ -19,24 +17,35 @@ impl Bounding {
     }
 }
 
-impl Helpe {
-    pub fn from_texture(
+pub struct Create;
+
+impl Create {
+    pub fn sprite(
+        texture: Handle<Image>,
+        trans_x: f32,
+        trans_y: f32,
+        trans_z: f32,
+    ) -> SpriteBundle {
+        SpriteBundle {
+            texture,
+            transform: Transform::from_translation(Vec3::new(trans_x, trans_y, trans_z)),
+            ..Default::default()
+        }
+    }
+
+    pub fn bounded_sprite(
         texture: Handle<Image>,
         trans_x: f32,
         trans_y: f32,
         trans_z: f32,
     ) -> (SpriteBundle, Bounding) {
         (
-            SpriteBundle {
-                texture,
-                transform: Transform::from_translation(Vec3::new(trans_x, trans_y, trans_z)),
-                ..Default::default()
-            },
+            Self::sprite(texture, trans_x, trans_y, trans_z),
             Bounding::new(),
         )
     }
 
-    pub fn tiled_from_texture(
+    pub fn tiled_sprite(
         texture: Handle<Image>,
         trans_x: f32,
         trans_y: f32,
@@ -44,7 +53,7 @@ impl Helpe {
         tile_x: bool,
         tile_y: bool,
         stretch_factor: f32,
-    ) -> (SpriteBundle, ImageScaleMode, Bounding) {
+    ) -> (SpriteBundle, ImageScaleMode) {
         (
             SpriteBundle {
                 texture,
@@ -63,8 +72,25 @@ impl Helpe {
                 tile_x,
                 tile_y,
                 stretch_value: 1.0 / stretch_factor,
-            },
-            Bounding::new(),
+            }
         )
+    }
+
+    pub fn tiled_bounded_sprite(
+        texture: Handle<Image>,
+        trans_x: f32,
+        trans_y: f32,
+        trans_z: f32,
+        tile_x: bool,
+        tile_y: bool,
+        stretch_factor: f32,
+    ) -> (SpriteBundle, ImageScaleMode, Bounding) {
+        let (sprite_bundle, image_scale_mode_tiled) = Self::tiled_sprite(
+            texture, 
+            trans_x, trans_y, trans_z, 
+            tile_x, tile_y, stretch_factor
+        );
+        
+        (sprite_bundle, image_scale_mode_tiled, Bounding::new())
     }
 }

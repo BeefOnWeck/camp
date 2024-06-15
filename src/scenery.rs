@@ -1,4 +1,4 @@
-use crate::helpe::{Bounding,Helpe};
+use crate::helpe::{Bounding,Create};
 use crate::loading::TextureAssets;
 use crate::GameState;
 use bevy::math::bounding::Aabb2d;
@@ -34,7 +34,7 @@ fn spawn_scenery(mut commands: Commands, textures: Res<TextureAssets>) {
         })
         .with_children(|parent| {
             // Trees
-            parent.spawn(Helpe::tiled_from_texture(
+            parent.spawn(Create::tiled_bounded_sprite(
                 textures.tree1.clone(),
                 440.0 / 0.5,
                 0.0,
@@ -44,26 +44,26 @@ fn spawn_scenery(mut commands: Commands, textures: Res<TextureAssets>) {
                 15.0,
             ));
             // Cars
-            parent.spawn(Helpe::from_texture(
+            parent.spawn(Create::bounded_sprite(
                 textures.car_right_gray.clone(),
                 340.0 / 0.5,
                 -600.0 / 0.5,
                 0.0,
             ));
-            parent.spawn(Helpe::from_texture(
+            parent.spawn(Create::bounded_sprite(
                 textures.car_right_blue.clone(),
                 340.0 / 0.5,
                 -500.0 / 0.5,
                 0.0,
             ));
-            parent.spawn(Helpe::from_texture(
+            parent.spawn(Create::bounded_sprite(
                 textures.car_right_red.clone(),
                 340.0 / 0.5,
                 -400.0 / 0.5,
                 0.0,
             ));
             // House
-            parent.spawn(Helpe::from_texture(
+            parent.spawn(Create::bounded_sprite(
                 textures.house.clone(),
                 0.0,
                 -200.0 / 0.5,
@@ -101,7 +101,7 @@ fn spawn_scenery(mut commands: Commands, textures: Res<TextureAssets>) {
                 Bounding::new(),
             ));
             // Fence vertical
-            parent.spawn(Helpe::tiled_from_texture(
+            parent.spawn(Create::tiled_bounded_sprite(
                 textures.fence_vertical.clone(),
                 -483.0 / 0.5,
                 0.0 / 0.5,
